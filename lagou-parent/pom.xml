@@ -13,6 +13,7 @@
         <module>lagou-cloud-eureka</module>
         <module>lagou-cloud-page</module>
         <module>lagou-cloud-eureka-9201</module>
+        <module>lagou-cloud-gateway</module>
         <module>lagou-service-product-9001</module>
         <module>lagou-cloud-config</module>
         <module>lagou-cloud-page-9101</module>
