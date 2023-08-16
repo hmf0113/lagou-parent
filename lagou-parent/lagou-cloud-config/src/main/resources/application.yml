@@ -1,0 +1,34 @@
+server:
+  port: 9400
+eureka:
+  client:
+    service-url:
+      defaultZone: http://LagouCloudEurekaServerA:9200/eureka,http://LagouCloudEurekaServerB:9201/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:@project.version@
+spring:
+  application:
+    name: lagou-service-config
+  cloud:
+    config:
+      server:
+        #git配置连接：url，用户名，密码，分支
+        git:
+          uri: https://github.com/hmf0113/lagou-config.git #配置git地址
+          username: hmf0113
+          password: hh147258369..
+          search-paths: #定位加载哪个项目
+            - lagou-config
+      label: master #配置github上的分支
+  rabbitmq:
+    host: 192.168.200.128
+    port: 5672
+    username: guest
+    password: guest
+#SpringBoot中暴露健康检查等断点接口
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "bus-refresh"

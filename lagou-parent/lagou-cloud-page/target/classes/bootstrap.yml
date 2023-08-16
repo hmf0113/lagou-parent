@@ -1,0 +1,71 @@
+server:
+  port: 9100
+spring:
+  application:
+    name: lagou-service-page
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.200.128:3306/lagou?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: root
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.200.128:8848
+      config:
+        server-addr: 192.168.200.128:8848
+        file-extension: yaml
+        #扩展的配置文件
+        ext-config:
+          - data-id: pagea.yaml
+            refresh: true
+          - data-id: pageb.yaml
+            refresh: true #是否实时刷新
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+hystrix:
+  command:
+    default:
+      circuitBreaker:
+        #强制打开熔断器
+        forceOpen: false
+        #触发熔断错误比例阈值，默认为50%
+        errorThresholdPercentage: 50
+        #熔断后休眠时间默认为5秒
+        sleepWindowInMilliseconds: 3000
+        #熔断触发最小请求数，默认为20
+        requestVolumeThreshold: 2
+      execution:
+        isolation:
+          thread:
+            #熔断器超时配置，默认为1
+          timeoutInMilliseconds: 2000
+#开启Fegin对熔断器的支持
+feign:
+  hystrix:
+    enabled: true
+    #开启请求和相应的压缩
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml,text/html,application/xml,application/json
+lagou-service-product:
+  ribbon:
+    #请求连接超时时间
+    ConnectTimeout: 2000
+    #请求处理超时时间
+    ReadTimeout: 15000
+    #对所有操作都进行重试
+    OkToRetryOnAllOperations: true
+    ####根据如上配置，当访问到故障请求的时候，它会再尝试访问一次当前实例（次数由MaxAutoRetries配置），
+    ####如果不行，就换一个实例进行访问，如果还不行，再换一次实例访问（更换次数由MaxAutoRetriesNextServer配置），
+    ####如果依然不行，返回失败信息。
+    MaxAutoRetries: 0 #对当前选中实例重试次数，不包括第一次调用
+    MaxAutoRetriesNextServer: 0 #切换实例的重试次数
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #负载策略调整

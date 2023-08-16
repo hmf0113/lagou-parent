@@ -1,0 +1,14 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: lagou-service-product #项目的名称注册eureka
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.200.128:3306/lagou?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: root
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.200.1:8848
